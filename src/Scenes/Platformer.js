@@ -51,6 +51,13 @@ class Platformer extends Phaser.Scene {
                 break; 
             }
         }
+        this.checkpoint; 
+        for(let flag of this.objectLayer.objects){
+            if(flag.name === 'Flag'){
+                this.checkpoint = flag; 
+                break; 
+            }
+        }
 
         if (this.initalSpawn) {
             console.log(`PlayerSpawn coordinates: x = ${this.initalSpawn.x}, y = ${this.initalSpawn.y}`);
@@ -164,8 +171,9 @@ class Platformer extends Phaser.Scene {
         let tiles = this.groundLayer.getTilesWithinShape(playerRect);
         for (let tile of tiles) {
             if (tile.properties.flag) {
-                this.player.updateRespawn(this.player.x, this.player.y);
-                //this.player.updateRespawn(tile.x, tile.y);
+                //this.player.updateRespawn(this.player.x, this.player.y);
+                this.player.updateRespawn(this.checkpoint.x * 2, this.checkpoint.y * 2); 
+                
                 break;
             }
             else if(tile.properties.isHazard){

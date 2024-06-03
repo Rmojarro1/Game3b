@@ -16,6 +16,7 @@ class Player extends Phaser.Physics.Arcade.Sprite{
         this.wallSlide = false; 
         this.landCoolDown = false; 
         this.airborne = false; 
+        this.stomp = false; 
 
         //this.isJumping = false; 
         //this.jumpStartTime = 0; 
@@ -53,7 +54,7 @@ class Player extends Phaser.Physics.Arcade.Sprite{
         
     }*/
     //console.log(this.vfx);         
-    if(this.leftKey.isDown){
+        if(this.leftKey.isDown){
                 if(this.body.velocity.x > 0){
                     //this.body.setAccelerationX(0);
                     //this.body.setVelocityX(0);
@@ -101,7 +102,8 @@ class Player extends Phaser.Physics.Arcade.Sprite{
                 this.vfx.walking.stop();
             }
         if(!this.body.blocked.down && this.stompKey.isDown){
-            this.setVelocityY(-this.JUMP_VELOCITY); 
+            this.setVelocityY(-this.JUMP_VELOCITY * 2); 
+            this.stomp = true; 
             console.log("Stomp"); 
         }
 
@@ -114,7 +116,8 @@ class Player extends Phaser.Physics.Arcade.Sprite{
         if(this.body.blocked.down){
             this.body.setGravityY(this.GRAVITY_DOWN); 
             if(this.airborne){
-                this.airborne = false; 
+                this.airborne = false;
+                this.stomp = false;  
                 if(!this.landCoolDown){
                     this.setScale(2.0, 1.0); 
                     this.landCoolDown = true;

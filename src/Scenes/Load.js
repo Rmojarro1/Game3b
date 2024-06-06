@@ -19,6 +19,10 @@ class Load extends Phaser.Scene {
             frameWidth: 18,
             frameHeight: 18
         });
+        this.load.spritesheet("rock_sheet", "rock_packed.png", {
+            frameWidth: 18, 
+            frameHeight: 18
+        })
     }
 
     create() {

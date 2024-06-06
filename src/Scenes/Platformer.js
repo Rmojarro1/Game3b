@@ -39,6 +39,10 @@ class Platformer extends Phaser.Scene {
         });
 
         this.animatedTiles.init(this.map2); 
+
+        this.otherLayer.setScrollFactor(0.25); 
+        //this.decoLayer.setScrollFactor(0.99); 
+         
         
         
 
@@ -125,6 +129,106 @@ class Platformer extends Phaser.Scene {
             this.score += 100; 
         });
 
+        this.blocks = this.map2.createFromObjects("ObjectLayer", {
+            name: "Smash", 
+            key: "rock_sheet", 
+            frame: 25
+        }); 
+        this.physics.world.enable(this.blocks, Phaser.Physics.Arcade.STATIC_BODY); 
+        this.blocks.forEach(block => {
+            block.setScale(2); 
+            block.x *= 2; 
+            block.y *= 2;
+            block.body.updateFromGameObject();  
+        }); 
+        this.blockGroup = this.add.group(this.blocks); 
+        //this.physics.add.collider(this.player, this.blockGroup);
+        this.physics.add.collider(this.player, this.blockGroup, (player, block) => {
+            //console.log("Player and block are colliding");
+            this.smashBlockCallback(player, block);
+        }, null, this);
+
+
+        this.moves = this.map2.createFromObjects("ObjectLayer", {
+            name: "MoveStart", 
+            key: "rock_sheet", 
+            frame: 15
+        }); 
+        
+        this.moves.forEach(platform => {
+            platform.setScale(2); 
+            platform.x *= 2; 
+            platform.y *= 2; 
+            this.physics.world.enable(platform, Phaser.Physics.Arcade.BODY);
+            platform.body.allowGravity = false;
+            platform.body.immovable = true;
+            platform.body.updateFromGameObject(); 
+
+            platform.startX = platform.x;
+            platform.startY = platform.y;
+
+            platform.return = false;
+
+            platform.update = function() {
+                
+                // Define a constant speed for the platforms
+                const speed = 50;
+
+                // Calculate the direction to the start and end positions
+                let dirX, dirY;
+                if (this.return) {
+                    dirX = this.startX - this.x;
+                    dirY = this.startY - this.y;
+                } else {
+                    dirX = this.endX - this.x;
+                    dirY = this.endY - this.y;
+                }
+
+                // Normalize the direction
+                let len = Math.sqrt(dirX * dirX + dirY * dirY);
+                if (len > 0) {
+                    dirX /= len;
+                    dirY /= len;
+                }
+
+                // Move the platform along the direction
+                this.body.setVelocity(dirX * speed, dirY * speed);
+
+                // If the platform is close enough to the end position and 'return' is false, set 'return' to true
+                if (Math.abs(this.endX - this.x) < 1 && Math.abs(this.endY - this.y) < 1 && !this.return) {
+                    this.return = true;
+                }
+                // If the platform is close enough to the start position and 'return' is true, set 'return' to false
+                else if (Math.abs(this.startX - this.x) < 1 && Math.abs(this.startY - this.y) < 1 && this.return) {
+                    this.return = false;
+                }
+    
+            };
+
+        }); 
+
+        let moveEnds = this.map2.getObjectLayer("ObjectLayer").objects.filter(object => object.name === "MoveEnd");
+
+        // Assign the end positions to the corresponding start positions
+        for (let i = 0; i < this.moves.length; i++) {
+            let platform = this.moves[i];
+            let end = moveEnds[i];
+            platform.endX = end.x * 2;
+            platform.endY = end.y * 2;
+        }
+
+        this.physics.add.collider(this.player, this.moves); 
+        
+
+        /*let moveEnds = this.map2.getObjectLayer("MoveEnd").objects;
+        for (let i = 0; i < this.moves.length; i++) {
+            let platform = this.moves[i];
+            let end = moveEnds[i];
+            platform.endX = end.x * 2;
+            platform.endY = end.y * 2;
+        }*/
+        
+
         this.win =this.map2.createFromObjects("ObjectLayer", {
             name: "Win", 
             key: "tilemap_sheet", 
@@ -166,6 +270,11 @@ class Platformer extends Phaser.Scene {
         this.player.update(); 
         var worldPoint = this.player.body.position; 
         this.Scoretext.setText("Score: " + this.score); 
+        this.moves.forEach(platform => {
+            platform.update();
+        });
+
+        
 
         let playerRect = new Phaser.Geom.Rectangle(worldPoint.x - 10, worldPoint.y - 10, this.player.width * 2, this.player.height * 2);
         let tiles = this.groundLayer.getTilesWithinShape(playerRect);
@@ -197,5 +306,15 @@ class Platformer extends Phaser.Scene {
             }
             
         }
+    }
+
+    smashBlockCallback(player, block){
+        console.log("We are touching the block"); 
+        if(player.returnStomp() === true){
+            console.log("Block should be destroyed"); 
+            block.destroy();  
+        }
+        
+        
     }
 }

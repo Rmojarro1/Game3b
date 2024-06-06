@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="40" tilewidth="18" tileheight="18" infinite="0" nextlayerid="5" nextobjectid="15">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="40" tilewidth="18" tileheight="18" infinite="0" nextlayerid="5" nextobjectid="30">
  <tileset firstgid="1" name="factory_tileset_packed" tilewidth="18" tileheight="18" tilecount="112" columns="16">
   <image source="tilemap2_packed.png" width="288" height="126"/>
   <tile id="0">
@@ -2236,5 +2236,16 @@
   <object id="12" name="Win" gid="625" x="575" y="71" width="18" height="18"/>
   <object id="13" name="Flag" x="675.042" y="330.051"/>
   <object id="14" x="-92.3599" y="-124.958"/>
+  <object id="15" name="Smash" x="99.1511" y="623.43"/>
+  <object id="20" name="Smash" x="403.396" y="260.781"/>
+  <object id="21" name="Smash" x="404.754" y="282.513"/>
+  <object id="22" name="Smash" x="406.112" y="304.244"/>
+  <object id="23" name="Smash" x="404.754" y="327.334"/>
+  <object id="24" name="Smash" x="44.8217" y="202.377"/>
+  <object id="25" name="Smash" x="276.957" y="618.977"/>
+  <object id="26" name="Smash" x="250.58" y="620.735"/>
+  <object id="27" name="Smash" x="225.082" y="620.735"/>
+  <object id="28" name="MoveStart" x="28.1353" y="583.81"/>
+  <object id="29" name="MoveEnd" x="152.106" y="583.808"/>
  </objectgroup>
 </map>

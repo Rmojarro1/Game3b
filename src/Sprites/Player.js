@@ -53,7 +53,7 @@ class Player extends Phaser.Physics.Arcade.Sprite{
 
         
     }*/
-    //console.log(this.vfx);         
+    //console.log(this.vfx);     
         if(this.leftKey.isDown){
                 if(this.body.velocity.x > 0){
                     //this.body.setAccelerationX(0);
@@ -101,8 +101,8 @@ class Player extends Phaser.Physics.Arcade.Sprite{
                 this.anims.play('idle'); 
                 this.vfx.walking.stop();
             }
-        if(!this.body.blocked.down && this.stompKey.isDown){
-            this.setVelocityY(-this.JUMP_VELOCITY * 2); 
+        if(this.stompKey.isDown && !this.body.blocked.down){
+            this.setVelocityY(-this.JUMP_VELOCITY * 4); 
             this.stomp = true; 
             console.log("Stomp"); 
         }
@@ -115,9 +115,10 @@ class Player extends Phaser.Physics.Arcade.Sprite{
 
         if(this.body.blocked.down){
             this.body.setGravityY(this.GRAVITY_DOWN); 
+            this.stomp = false;
             if(this.airborne){
                 this.airborne = false;
-                this.stomp = false;  
+                //this.stomp = false; 
                 if(!this.landCoolDown){
                     this.setScale(2.0, 1.0); 
                     this.landCoolDown = true;
@@ -125,6 +126,7 @@ class Player extends Phaser.Physics.Arcade.Sprite{
                     this.scene.time.delayedCall(100, () => {
                         this.setScale(1.5, 1.5);
                         this.landCoolDown = false;
+                        
                     });
                 }
             }
@@ -166,6 +168,8 @@ class Player extends Phaser.Physics.Arcade.Sprite{
                 this.wallSlide = false;
             }
         }
+
+        
     }
 
     resetPlayer(){
@@ -187,6 +191,10 @@ class Player extends Phaser.Physics.Arcade.Sprite{
             this.checkPoint = true; 
             console.log("Updated respawn!");
         }
+    }
+
+    returnStomp(){
+        return this.stomp; 
     }
 
     

@@ -22,12 +22,12 @@ class Player extends Phaser.Physics.Arcade.Sprite{
         //this.MAX_JUMP_TIME = 100; 
 
         // variables and settings
-        this.ACCELERATION = 700;
+        this.ACCELERATION = 700; //how fast to build speed
         this.DRAG = 1500;    // DRAG < ACCELERATION = icy slide
-        this.JUMP_VELOCITY = -800; //-900 default
+        this.JUMP_VELOCITY = -800; 
         this.GRAVITY_DOWN = 500; 
-        this.MAX_FALL_SPEED = 1000; 
-        this.MAX_SPEED = 300; 
+        this.MAX_FALL_SPEED = 1000; //Y velocity
+        this.MAX_SPEED = 300; //X velocity
         this.PARTICLE_VELOCITY = 50; 
 
         this.vfx = vfx; 
@@ -54,10 +54,6 @@ class Player extends Phaser.Physics.Arcade.Sprite{
     }*/
     //console.log(this.vfx);         
     if(this.leftKey.isDown){
-                if(this.body.velocity.x > 0){
-                    //this.body.setAccelerationX(0);
-                    //this.body.setVelocityX(0);
-                }
                 this.body.setAccelerationX(-acceleration); 
                 this.resetFlip(); 
                 this.anims.play('walk', true); 
@@ -66,28 +62,21 @@ class Player extends Phaser.Physics.Arcade.Sprite{
 
                 this.vfx.walking.setParticleSpeed(this.PARTICLE_VELOCITY, 0);
     
-                // Only play smoke effect if touching the ground
-    
                 if (this.body.blocked.down) {
     
                     this.vfx.walking.start();
                     
                 }
             }
-            else if(this.rightKey.isDown){
-                if(this.body.velocity.x < 0){
-                    //this.body.setAccelerationX(0);
-                    //this.body.setVelocityX(0); //remove?
-                }
-                this.body.setAccelerationX(acceleration); //this.acceleration 
+            else if(this.rightKey.isDown){                
+                this.body.setAccelerationX(acceleration);
+                //character builds up speed
                 this.setFlip(true, false); 
                 this.anims.play('walk', true); 
 
                 this.vfx.walking.startFollow(this);
 
                 this.vfx.walking.setParticleSpeed(-this.PARTICLE_VELOCITY, 0);
-    
-                // Only play smoke effect if touching the ground
     
                 if (this.body.blocked.down) {
     
@@ -133,8 +122,6 @@ class Player extends Phaser.Physics.Arcade.Sprite{
             this.scene.sound.play("playerJump");
             this.setScale(1.3, 1.7);
             this.airborne = true; 
-            //this.isJumping = true; 
-            //this.jumpStartTime = this.scene.time.now; 
         }
         
 

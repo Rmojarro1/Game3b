@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="40" tilewidth="18" tileheight="18" infinite="0" nextlayerid="5" nextobjectid="30">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="40" tilewidth="18" tileheight="18" infinite="0" nextlayerid="5" nextobjectid="34">
+ <editorsettings>
+  <export target="platformer-level-2.tmj" format="json"/>
+ </editorsettings>
  <tileset firstgid="1" name="factory_tileset_packed" tilewidth="18" tileheight="18" tilecount="112" columns="16">
   <image source="tilemap2_packed.png" width="288" height="126"/>
   <tile id="0">
@@ -2247,5 +2250,8 @@
   <object id="27" name="Smash" x="225.082" y="620.735"/>
   <object id="28" name="MoveStart" x="28.1353" y="583.81"/>
   <object id="29" name="MoveEnd" x="152.106" y="583.808"/>
+  <object id="31" name="MoveStart" x="276" y="576"/>
+  <object id="32" name="MoveEnd" x="276" y="476"/>
+  <object id="33" name="EnemySpawn" x="188.667" y="515.333"/>
  </objectgroup>
 </map>

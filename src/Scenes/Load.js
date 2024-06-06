@@ -23,6 +23,8 @@ class Load extends Phaser.Scene {
             frameWidth: 18, 
             frameHeight: 18
         })
+
+        this.load.image("enemy1", "enemy.png"); 
     }
 
     create() {

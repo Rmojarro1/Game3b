@@ -1,12 +1,4 @@
 { "compressionlevel":-1,
- "editorsettings":
-    {
-     "export":
-        {
-         "format":"tmx",
-         "target":"platformer-level-2..tmx"
-        }
-    },
  "height":40,
  "infinite":false,
  "layers":[
@@ -295,8 +287,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":675.042444821732,
-                 "y":330.050933786078
+                 "x":675.042,
+                 "y":330.051
                 }, 
                 {
                  "height":0,
@@ -306,8 +298,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":-92.3599320882852,
-                 "y":-124.957555178268
+                 "x":-92.3599,
+                 "y":-124.958
                 }, 
                 {
                  "height":0,
@@ -317,8 +309,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":99.151103565365,
-                 "y":623.429541595925
+                 "x":99.1511,
+                 "y":623.43
                 }, 
                 {
                  "height":0,
@@ -328,8 +320,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":403.39558573854,
-                 "y":260.780984719864
+                 "x":403.396,
+                 "y":260.781
                 }, 
                 {
                  "height":0,
@@ -339,8 +331,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":404.753820033956,
-                 "y":282.51273344652
+                 "x":404.754,
+                 "y":282.513
                 }, 
                 {
                  "height":0,
@@ -350,8 +342,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":406.112054329372,
-                 "y":304.244482173175
+                 "x":406.112,
+                 "y":304.244
                 }, 
                 {
                  "height":0,
@@ -361,8 +353,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":404.753820033956,
-                 "y":327.334465195246
+                 "x":404.754,
+                 "y":327.334
                 }, 
                 {
                  "height":0,
@@ -372,8 +364,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":44.8217317487267,
-                 "y":202.376910016978
+                 "x":44.8217,
+                 "y":202.377
                 }, 
                 {
                  "height":0,
@@ -383,8 +375,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":276.956893393577,
-                 "y":618.976676028819
+                 "x":276.957,
+                 "y":618.977
                 }, 
                 {
                  "height":0,
@@ -394,8 +386,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":250.580046403712,
-                 "y":620.73513249481
+                 "x":250.58,
+                 "y":620.735
                 }, 
                 {
                  "height":0,
@@ -405,8 +397,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":225.082427646843,
-                 "y":620.73513249481
+                 "x":225.082,
+                 "y":620.735
                 }, 
                 {
                  "height":0,
@@ -416,7 +408,7 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":28.1353034558554,
+                 "x":28.1353,
                  "y":583.81
                 }, 
                 {
@@ -427,8 +419,41 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":152.106484308218,
-                 "y":583.807546709
+                 "x":152.106,
+                 "y":583.808
+                }, 
+                {
+                 "height":0,
+                 "id":31,
+                 "name":"MoveStart",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":276,
+                 "y":576
+                }, 
+                {
+                 "height":0,
+                 "id":32,
+                 "name":"MoveEnd",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":276,
+                 "y":476
+                }, 
+                {
+                 "height":0,
+                 "id":33,
+                 "name":"EnemySpawn",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":188.666666666667,
+                 "y":515.333333333333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -437,7 +462,7 @@
          "y":0
         }],
  "nextlayerid":5,
- "nextobjectid":30,
+ "nextobjectid":34,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",

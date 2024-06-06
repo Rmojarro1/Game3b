@@ -39,13 +39,7 @@ class Platformer extends Phaser.Scene {
         });
 
         this.animatedTiles.init(this.map2); 
-
         this.otherLayer.setScrollFactor(0.25); 
-        //this.decoLayer.setScrollFactor(0.99); 
-         
-        
-        
-
         this.objectLayer = this.map2.getObjectLayer("ObjectLayer"); 
 
         this.initalSpawn; 
@@ -75,11 +69,8 @@ class Platformer extends Phaser.Scene {
 
         this.vfx.walking = this.add.particles(0, 0, "kenny-particles", {
             frame: ['smoke_03.png', 'smoke_09.png'],
-            // TODO: Try: add random: true
             scale: {start: 0.03, end: 0.1},
-            // TODO: Try: maxAliveParticles: 8,
             lifespan: 350,
-            // TODO: Try: gravityY: -400,
             alpha: {start: 1, end: 0.1}, 
         });
 
@@ -110,21 +101,17 @@ class Platformer extends Phaser.Scene {
             name: "coin",
             key: "tilemap_sheet",
             frame: 151
-        });
-        console.log(this.coins); 
-          // Since createFromObjects returns an array of regular Sprites, we need to convert 
-        // them into Arcade Physics sprites (STATIC_BODY, so they don't move) 
+        }); 
         this.physics.world.enable(this.coins, Phaser.Physics.Arcade.STATIC_BODY);
         this.coins.forEach(coin => {
             coin.setScale(2.0);
             coin.x *= 2;
             coin.y *= 2;
-            coin.body.updateFromGameObject(); // update the physics body to match the new scale and position
+            coin.body.updateFromGameObject(); 
         });
         this.coinGroup = this.add.group(this.coins);
         this.physics.add.overlap(this.player, this.coinGroup, (obj1, obj2) => {
-            obj2.destroy(); // remove coin on overlap
-            console.log("Coin touched!"); 
+            obj2.destroy();  
             this.sound.play("coin"); 
             this.score += 100; 
         });
@@ -142,9 +129,7 @@ class Platformer extends Phaser.Scene {
             block.body.updateFromGameObject();  
         }); 
         this.blockGroup = this.add.group(this.blocks); 
-        //this.physics.add.collider(this.player, this.blockGroup);
         this.physics.add.collider(this.player, this.blockGroup, (player, block) => {
-            //console.log("Player and block are colliding");
             this.smashBlockCallback(player, block);
         }, null, this);
 
@@ -154,6 +139,23 @@ class Platformer extends Phaser.Scene {
             key: "rock_sheet", 
             frame: 15
         }); 
+
+        this.eSpawn; 
+        for(let object of this.objectLayer.objects){
+            if(object.name === 'EnemySpawn'){
+                this.eSpawn = object; 
+                break; 
+            }
+        }
+
+        this.enemy = this.add.sprite(this.eSpawn.x * 2,  this.eSpawn.y *2, "enemy1"); 
+        this.enemy.setScale(2); 
+        this.physics.world.enable(this.enemy, Phaser.Physics.Arcade.BODY);
+        this.enemy.body.allowGravity = false;
+        this.enemy.body.immovable = true; 
+        this.physics.add.collider(this.player, this.enemy, (player, enemy) => {
+            this.enemyCallback(player, enemy); 
+        }, null, this); 
         
         this.moves.forEach(platform => {
             platform.setScale(2); 
@@ -170,11 +172,8 @@ class Platformer extends Phaser.Scene {
             platform.return = false;
 
             platform.update = function() {
-                
-                // Define a constant speed for the platforms
-                const speed = 50;
 
-                // Calculate the direction to the start and end positions
+                const speed = 50;
                 let dirX, dirY;
                 if (this.return) {
                     dirX = this.startX - this.x;
@@ -183,22 +182,15 @@ class Platformer extends Phaser.Scene {
                     dirX = this.endX - this.x;
                     dirY = this.endY - this.y;
                 }
-
-                // Normalize the direction
                 let len = Math.sqrt(dirX * dirX + dirY * dirY);
                 if (len > 0) {
                     dirX /= len;
                     dirY /= len;
                 }
-
-                // Move the platform along the direction
                 this.body.setVelocity(dirX * speed, dirY * speed);
-
-                // If the platform is close enough to the end position and 'return' is false, set 'return' to true
                 if (Math.abs(this.endX - this.x) < 1 && Math.abs(this.endY - this.y) < 1 && !this.return) {
                     this.return = true;
                 }
-                // If the platform is close enough to the start position and 'return' is true, set 'return' to false
                 else if (Math.abs(this.startX - this.x) < 1 && Math.abs(this.startY - this.y) < 1 && this.return) {
                     this.return = false;
                 }
@@ -209,7 +201,6 @@ class Platformer extends Phaser.Scene {
 
         let moveEnds = this.map2.getObjectLayer("ObjectLayer").objects.filter(object => object.name === "MoveEnd");
 
-        // Assign the end positions to the corresponding start positions
         for (let i = 0; i < this.moves.length; i++) {
             let platform = this.moves[i];
             let end = moveEnds[i];
@@ -218,16 +209,6 @@ class Platformer extends Phaser.Scene {
         }
 
         this.physics.add.collider(this.player, this.moves); 
-        
-
-        /*let moveEnds = this.map2.getObjectLayer("MoveEnd").objects;
-        for (let i = 0; i < this.moves.length; i++) {
-            let platform = this.moves[i];
-            let end = moveEnds[i];
-            platform.endX = end.x * 2;
-            platform.endY = end.y * 2;
-        }*/
-        
 
         this.win =this.map2.createFromObjects("ObjectLayer", {
             name: "Win", 
@@ -243,24 +224,16 @@ class Platformer extends Phaser.Scene {
         })
         this.winGroup = this.add.group(this.win); 
         this.physics.add.overlap(this.player, this.winGroup, (obj1, obj2) => {
-            obj2.destroy(); // remove coin on overlap
-            console.log("Key touched!"); 
+            obj2.destroy();
             this.sound.play("gameWin"); 
         });
-
-
-        // debug key listener (assigned to D key)
-        this.input.keyboard.on('keydown-D', () => {
-            this.physics.world.drawDebug = this.physics.world.drawDebug ? false : true
-            this.physics.world.debugGraphic.clear()
-        }, this);
 
         this.Scoretext = this.add.text(16, 16, 'Score: ', { font: '64px Courier', fill: '#00ff00' });
         this.Scoretext.setOrigin(0, 0);
         this.Scoretext.setScrollFactor(1);
-        this.Scoretext.setColor('#ff0000'); // This will change the color of the text to red
+        this.Scoretext.setColor('#ff0000'); 
 
-        this.physics.world.TILE_BIAS = 50; 
+        this.physics.world.TILE_BIAS = 100; 
 
     }
 
@@ -280,9 +253,7 @@ class Platformer extends Phaser.Scene {
         let tiles = this.groundLayer.getTilesWithinShape(playerRect);
         for (let tile of tiles) {
             if (tile.properties.flag) {
-                //this.player.updateRespawn(this.player.x, this.player.y);
                 this.player.updateRespawn(this.checkpoint.x * 2, this.checkpoint.y * 2); 
-                
                 break;
             }
             else if(tile.properties.isHazard){
@@ -313,8 +284,10 @@ class Platformer extends Phaser.Scene {
         if(player.returnStomp() === true){
             console.log("Block should be destroyed"); 
             block.destroy();  
-        }
-        
-        
+        } 
+    }
+
+    enemyCallback(player, enemy){
+        player.resetPlayer(); 
     }
 }

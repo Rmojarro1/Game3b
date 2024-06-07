@@ -75,6 +75,7 @@ class Platformer extends Phaser.Scene {
         });
 
         this.vfx.walking.stop();
+        //testing
 
         this.left = this.input.keyboard.addKey("A"); 
         this.right = this.input.keyboard.addKey("D"); 

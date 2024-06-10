@@ -2,7 +2,7 @@ class Platformer extends Phaser.Scene {
     constructor() {
         super("platformerScene");
         this.Scoretext; 
-        this.score; 
+        this.score = 0; 
     }
 
     init() {
@@ -24,7 +24,7 @@ class Platformer extends Phaser.Scene {
 
 
         document.getElementById('description').innerHTML = '<h2>Game3b</h2><br>Left: A // D: Right // Space: jump // S: Ground pound // Space while slding down wall: Wall jump // Get the box at the top of the factory'
-        this.map2 = this.add.tilemap("platformer-level-2", 18, 18, 50, 40); 
+        this.map2 = this.add.tilemap("platformer-level-2", 18, 18, 50, 40); //2 oe 3
         this.tileset1 = this.map2.addTilesetImage("factory_tileset_packed", "tilemap_tiles2"); 
         this.tileset2 = this.map2.addTilesetImage("forest", "tilemap_tiles"); 
         this.tileset3 = this.map2.addTilesetImage("blocks", "stone_tiles");
@@ -230,8 +230,6 @@ class Platformer extends Phaser.Scene {
         });
 
         this.Scoretext = this.add.text(16, 16, 'Score: ', { font: '64px Courier', fill: '#00ff00' });
-        this.Scoretext.setOrigin(0, 0);
-        this.Scoretext.setScrollFactor(1);
         this.Scoretext.setColor('#ff0000'); 
 
         this.physics.world.TILE_BIAS = 100; 
@@ -242,8 +240,15 @@ class Platformer extends Phaser.Scene {
 
     update() {
         this.player.update(); 
-        var worldPoint = this.player.body.position; 
+         
         this.Scoretext.setText("Score: " + this.score); 
+
+        this.Scoretext.x = this.cameras.main.scrollX + 250;
+        this.Scoretext.y = this.cameras.main.scrollY + 150;
+
+        //console.log("Camera " + this.Scoretext.x + "," + this.Scoretext.y); 
+
+        var worldPoint = this.player.body.position;
         this.moves.forEach(platform => {
             platform.update();
         });

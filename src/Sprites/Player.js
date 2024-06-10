@@ -115,7 +115,12 @@ class Player extends Phaser.Physics.Arcade.Sprite{
 
         if(this.body.blocked.down){
             this.body.setGravityY(this.GRAVITY_DOWN); 
-            this.stomp = false;
+            if(this.stomp){
+                this.stomp = false;
+                this.newVector = (0.1, 0.015); 
+                this.scene.cameras.main.shake(100, this.newVector); 
+            }
+            
             if(this.airborne){
                 this.airborne = false;
                 //this.stomp = false; 
@@ -184,11 +189,11 @@ class Player extends Phaser.Physics.Arcade.Sprite{
     }
 
     updateRespawn(x, y){
-        if(!this.checkPoint){
+        if(this.respawnX != x && this.respawnY != y){
             this.scene.sound.play("checkpoint"); 
             this.respawnX = x; 
             this.respawnY = y; 
-            this.checkPoint = true; 
+            //this.checkPoint = true; 
             console.log("Updated respawn!");
         }
     }

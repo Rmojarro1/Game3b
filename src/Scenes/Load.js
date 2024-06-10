@@ -13,6 +13,7 @@ class Load extends Phaser.Scene {
         this.load.image("stone_tiles", "rock_packed.png");
         this.load.tilemapTiledJSON("platformer-level-2", "platformer-level-2.tmj"); 
         this.load.tilemapTiledJSON("platformer-level-3", "platformer-level-3.tmj"); 
+        this.load.tilemapTiledJSON("platformer-level-4", "platformer-level-4.tmj"); 
 
         this.load.multiatlas("kenny-particles", "kenny-particles.json");
 

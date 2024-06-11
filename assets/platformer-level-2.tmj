@@ -452,8 +452,19 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":188.666666666667,
-                 "y":515.333333333333
+                 "x":188.667,
+                 "y":515.333
+                }, 
+                {
+                 "height":0,
+                 "id":34,
+                 "name":"EnemyEnd",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":14,
+                 "y":512.666666666667
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -462,7 +473,7 @@
          "y":0
         }],
  "nextlayerid":5,
- "nextobjectid":34,
+ "nextobjectid":35,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",

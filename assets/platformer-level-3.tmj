@@ -683,6 +683,28 @@
                  "width":0,
                  "x":129.333,
                  "y":768.667
+                }, 
+                {
+                 "height":0,
+                 "id":67,
+                 "name":"EnemyEnd",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":128,
+                 "y":677.333333333333
+                }, 
+                {
+                 "height":0,
+                 "id":68,
+                 "name":"EnemyEnd",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":225.333333333333,
+                 "y":674.666666666667
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -691,7 +713,7 @@
          "y":0
         }],
  "nextlayerid":5,
- "nextobjectid":67,
+ "nextobjectid":69,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",

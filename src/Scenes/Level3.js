@@ -138,7 +138,7 @@ class Level3 extends Phaser.Scene {
         for(let object of this.objectLayer.objects){
             if(object.name === 'EnemySpawn'){
                 this.eSpawn = object; 
-                break; 
+                //break; 
             }
         }
 

@@ -134,11 +134,10 @@ class Platformer extends Phaser.Scene {
             frame: 15
         }); 
 
-        this.eSpawn; 
+        /*this.eSpawn; 
         for(let object of this.objectLayer.objects){
             if(object.name === 'EnemySpawn'){
                 this.eSpawn = object; 
-                break; 
             }
         }
 
@@ -149,7 +148,8 @@ class Platformer extends Phaser.Scene {
         this.enemy.body.immovable = true; 
         this.physics.add.collider(this.player, this.enemy, (player, enemy) => {
             this.enemyCallback(player, enemy); 
-        }, null, this); 
+        }, null, this); */
+
         
         this.moves.forEach(platform => {
             platform.setScale(2); 
@@ -204,6 +204,53 @@ class Platformer extends Phaser.Scene {
 
         this.physics.add.collider(this.player, this.moves); 
 
+        this.enemies = []; 
+        this.enemySpawns = this.map2.getObjectLayer("ObjectLayer").objects.filter(object => object.name === "EnemySpawn");
+        let enemyEnds = this.map2.getObjectLayer("ObjectLayer").objects.filter(object => object.name === "EnemyEnd");
+        for (let i = 0; i < this.enemySpawns.length; i++) {
+            let spawn = this.enemySpawns[i];
+            let end = enemyEnds[i];
+
+            let enemy = this.add.sprite(spawn.x * 2, spawn.y * 2, "enemy1");
+            enemy.setScale(2);
+            this.physics.world.enable(enemy, Phaser.Physics.Arcade.BODY);
+            enemy.body.allowGravity = false;
+            enemy.body.immovable = true;
+            enemy.startX = spawn.x * 2;
+            enemy.startY = spawn.y * 2;
+            enemy.endX = end.x * 2;
+            enemy.endY = end.y * 2;
+
+            enemy.return = false;
+            enemy.update = function() {
+                const speed = 100;
+                let dirX, dirY;
+                if (this.return) {
+                    dirX = this.startX - this.x;
+                    dirY = this.startY - this.y;
+                } else {
+                    dirX = this.endX - this.x;
+                    dirY = this.endY - this.y;
+                }
+                let len = Math.sqrt(dirX * dirX + dirY * dirY);
+                if (len > 0) {
+                    dirX /= len;
+                    dirY /= len;
+                }
+                this.body.setVelocity(dirX * speed, dirY * speed);
+                if (Math.abs(this.endX - this.x) < 1 && Math.abs(this.endY - this.y) < 1 && !this.return) {
+                    this.return = true;
+                }
+                else if (Math.abs(this.startX - this.x) < 1 && Math.abs(this.startY - this.y) < 1 && this.return) {
+                    this.return = false;
+                }
+            };
+            this.physics.add.collider(this.player, enemy, (player, enemy) => {
+                this.enemyCallback(player, enemy);
+            }, null, this);
+            this.enemies.push(enemy);
+        }
+
         this.win =this.map2.createFromObjects("ObjectLayer", {
             name: "Win", 
             key: "tilemap_sheet", 
@@ -254,6 +301,9 @@ class Platformer extends Phaser.Scene {
         this.moves.forEach(platform => {
             platform.update();
         });
+        for (let enemy of this.enemies) {
+            enemy.update();
+        }
 
         
 

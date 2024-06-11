@@ -49,11 +49,7 @@ class Level2 extends Phaser.Scene {
             }
         }
 
-        if (this.initalSpawn) {
-            console.log(`PlayerSpawn coordinates: x = ${this.initalSpawn.x}, y = ${this.initalSpawn.y}`);
-        } else {
-            console.log('PlayerSpawn object not found');
-        }
+        
         
         if (!this.vfx) {
             this.vfx = {};
@@ -133,22 +129,6 @@ class Level2 extends Phaser.Scene {
             frame: 15
         }); 
 
-        this.eSpawn; 
-        for(let object of this.objectLayer.objects){
-            if(object.name === 'EnemySpawn'){
-                this.eSpawn = object; 
-                break; 
-            }
-        }
-
-        this.enemy = this.add.sprite(this.eSpawn.x * 2,  this.eSpawn.y *2, "enemy1"); 
-        this.enemy.setScale(2); 
-        this.physics.world.enable(this.enemy, Phaser.Physics.Arcade.BODY);
-        this.enemy.body.allowGravity = false;
-        this.enemy.body.immovable = true; 
-        this.physics.add.collider(this.player, this.enemy, (player, enemy) => {
-            this.enemyCallback(player, enemy); 
-        }, null, this); 
         
         this.moves.forEach(platform => {
             platform.setScale(2); 
@@ -166,7 +146,7 @@ class Level2 extends Phaser.Scene {
 
             platform.update = function() {
 
-                const speed = 50;
+                const speed = 100;
                 let dirX, dirY;
                 if (this.return) {
                     dirX = this.startX - this.x;
@@ -202,6 +182,52 @@ class Level2 extends Phaser.Scene {
         }
 
         this.physics.add.collider(this.player, this.moves); 
+
+        let enemySpawns = this.map2.getObjectLayer("ObjectLayer").objects.filter(object => object.name === "EnemySpawn");
+        let enemyEnds = this.map2.getObjectLayer("ObjectLayer").objects.filter(object => object.name === "EnemyEnd");
+        for (let i = 0; i < enemySpawns.length; i++) {
+            let spawn = enemySpawns[i];
+            let end = enemyEnds[i];
+
+            let enemy = this.add.sprite(spawn.x * 2, spawn.y * 2, "enemy1");
+            enemy.setScale(2);
+            this.physics.world.enable(enemy, Phaser.Physics.Arcade.BODY);
+            enemy.body.allowGravity = false;
+            enemy.body.immovable = true;
+            enemy.startX = spawn.x * 2;
+            enemy.startY = spawn.y * 2;
+            enemy.endX = end.x * 2;
+            enemy.endY = end.y * 2;
+
+            enemy.return = false;
+            enemy.update = function() {
+                const speed = 100;
+                let dirX, dirY;
+                if (this.return) {
+                    dirX = this.startX - this.x;
+                    dirY = this.startY - this.y;
+                } else {
+                    dirX = this.endX - this.x;
+                    dirY = this.endY - this.y;
+                }
+                let len = Math.sqrt(dirX * dirX + dirY * dirY);
+                if (len > 0) {
+                    dirX /= len;
+                    dirY /= len;
+                }
+                this.body.setVelocity(dirX * speed, dirY * speed);
+                if (Math.abs(this.endX - this.x) < 1 && Math.abs(this.endY - this.y) < 1 && !this.return) {
+                    this.return = true;
+                }
+                else if (Math.abs(this.startX - this.x) < 1 && Math.abs(this.startY - this.y) < 1 && this.return) {
+                    this.return = false;
+                }
+            };
+            this.physics.add.collider(this.player, enemy, (player, enemy) => {
+                this.enemyCallback(player, enemy);
+            }, null, this);
+        }
+
 
         this.win =this.map2.createFromObjects("ObjectLayer", {
             name: "Win", 
@@ -242,8 +268,6 @@ class Level2 extends Phaser.Scene {
         this.Scoretext.x = this.cameras.main.scrollX + 250;
         this.Scoretext.y = this.cameras.main.scrollY + 150;
 
-        //console.log("Camera " + this.Scoretext.x + "," + this.Scoretext.y); 
-
         var worldPoint = this.player.body.position;
         this.moves.forEach(platform => {
             platform.update();
@@ -272,10 +296,6 @@ class Level2 extends Phaser.Scene {
                     this.player.x += -1; 
                     break; 
                 }
-                else{
-                    console.log("We shouldn't be passing this!"); 
-                    break; 
-                }
                 
             }
             else if(tile.properties.spring){
@@ -286,9 +306,7 @@ class Level2 extends Phaser.Scene {
     }
 
     smashBlockCallback(player, block){
-        console.log("We are touching the block"); 
         if(player.returnStomp() === true){
-            console.log("Block should be destroyed"); 
             block.destroy();  
         } 
     }

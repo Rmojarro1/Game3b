@@ -23,7 +23,7 @@ class Platformer extends Phaser.Scene {
     create() {
 
 
-        document.getElementById('description').innerHTML = '<h2>Game3b</h2><br>Left: A // D: Right // Space: jump // S: Ground pound // Space while slding down wall: Wall jump // Get the box at the top of the factory'
+        document.getElementById('description').innerHTML = '<h2>Game4b</h2><br>Left: A // D: Right // Space: jump // S: Ground pound // Space while slding down wall: Wall jump //'
         this.map2 = this.add.tilemap("platformer-level-2", 18, 18, 50, 40); //2 oe 3
         this.tileset1 = this.map2.addTilesetImage("factory_tileset_packed", "tilemap_tiles2"); 
         this.tileset2 = this.map2.addTilesetImage("forest", "tilemap_tiles"); 
